@@ -1,7 +1,7 @@
 import './App.css';
 import Home from './Home';
-import Customers from './Customers';
-import Navbar2 from './Navbar';
+import Customers from './components/Customers';
+import Navbar2 from './components/Navbar';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
