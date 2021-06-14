@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap';
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import { AddCustomerModal } from './AddEmpModal';
 import { EditCustomerModal } from './EditEmpModal';
+import Pagination from './Pagination';
 import axios from 'axios';  
 
 
@@ -11,10 +12,12 @@ class Customers extends Component{
     constructor(props){
         super(props);
         this.state={
-		  customers: [],
-		  addModalShow:false, 
-		  editModalShow:false
-		}
+	  customers: [],
+	  pageNumber: 0,
+	  resultsPerPage: 10,
+	  addModalShow:false, 
+	  editModalShow:false
+	}
     }
 
     refreshList = () => {
@@ -29,8 +32,9 @@ class Customers extends Component{
     
     render(){
         const { customers } = this.state;
-		let addModalClose=()=>this.setState({ addModalShow:false });
+	let addModalClose=()=>this.setState({ addModalShow:false });
         let editModalClose=()=>this.setState({ editModalShow:false });
+        const paginate = pageNumber => this.setState({pageNumber});
 		
         return(
             <div >
@@ -65,7 +69,13 @@ class Customers extends Component{
                     <AddEmpModal show={this.state.addModalShow}
                     onHide={addModalClose}/>
                 </ButtonToolbar>
-				
+
+		<Pagination
+		  postsPerPage={resultsPerPage}
+		  totalPosts={customers.length}
+		  paginate={paginate}
+		/>
+			  
             </div>
         )
     }
