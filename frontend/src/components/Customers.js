@@ -32,9 +32,9 @@ class Customers extends Component{
     
     render(){
         const { customers } = this.state;
-	let addModalClose=()=>this.setState({ addModalShow:false });
-        let editModalClose=()=>this.setState({ editModalShow:false });
-        const paginate = pageNumber => this.setState({pageNumber});
+	let addModalClose=() => this.setState({ addModalShow:false });
+        let editModalClose=() => this.setState({ editModalShow:false });
+        const paginate = pageNumber => this.setState({ pageNumber });
 		
         return(
             <div >
