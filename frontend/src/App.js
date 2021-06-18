@@ -21,7 +21,7 @@ import LeadDetail from './components/LeadDetail';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 
-import setAuthToken from './utils/setAuthToken';
+import setAuthToken from './actions/setAuthToken';
 
 // PRIVATE ROUTE & ALERT
 import PrivateRoute from './components/routing/PrivateRoute';
