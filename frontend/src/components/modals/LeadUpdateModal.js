@@ -1,24 +1,21 @@
-import React, { Fragment, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment, useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
+import PropTypes from 'prop-types';
 
+// COMPONENTS
 import AlertItem from '../../layouts/AlertItem';
 
 // REDUX
 import { connect } from 'react-redux';
-import { createLead } from '../../actions/lead';
+import { updateLead } from '../../actions/lead';
 import setAlert from '../../actions/alert';
 
-const LeadModal = ({ alert, createLead, setAlert }) => {
+const LeadUpdateModal = ({ lead, alert, updateLead, setAlert, history }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    country: '',
-    description: ''
-  });
-
-  const { name, email, country, description } = formData;
+  const [formData, setFormData] = useState({...lead});
+  
+  const { id, name, email, country, description } = formData;
 
   const toggle = e => setIsOpen(!isOpen);
 
@@ -40,12 +37,11 @@ const LeadModal = ({ alert, createLead, setAlert }) => {
         'Please fill in all fields!',
         400,
         'danger',
-        'LEAD_CREATE_ERROR'
+        'LEAD_UPDATE_ERROR'
       );
     } else {
       const body = { name, email, country, description };
-      createLead(body);
-
+      updateLead(body, id, history);
       setFormData({
         name: '',
         email: '',
@@ -57,7 +53,7 @@ const LeadModal = ({ alert, createLead, setAlert }) => {
 
   return (
     <Fragment>
-      <Button color="primary" onClick={e => toggle(e)}>Create Leads</Button>
+      <Button color="primary" onClick={e => toggle(e)}>Edit</Button>
       <Modal isOpen={isOpen} toggle={e => toggle(e)}>
         <ModalHeader toggle={e => toggle(e)}>Leads</ModalHeader>
         <ModalBody>
@@ -65,13 +61,7 @@ const LeadModal = ({ alert, createLead, setAlert }) => {
                 <div className='form-group'>
                   {alert.map(
                     alrt =>
-                      alrt.typeId === 'LEAD_CREATE_ERROR' && (
-                        <AlertItem alert={alrt} />
-                      )
-                  )}
-                  {alert.map(
-                    alrt =>
-                      alrt.typeId === 'LEAD_CREATE_SUCCESS' && (
+                      alrt.typeId === 'LEAD_UPDATE_ERROR' && (
                         <AlertItem alert={alrt} />
                       )
                   )}
@@ -129,7 +119,7 @@ const LeadModal = ({ alert, createLead, setAlert }) => {
                   Close
                 </button>
                 <button type='submit' className='btn btn-primary'>
-                  Save
+                  Update
                 </button>
               </div>
             </form>
@@ -139,9 +129,10 @@ const LeadModal = ({ alert, createLead, setAlert }) => {
   );
 };
 
-LeadModal.propTypes = {
+LeadUpdateModal.propTypes = {
+  lead: PropTypes.object.isRequired,
   alert: PropTypes.array.isRequired,
-  createLead: PropTypes.func.isRequired,
+  updateLead: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired
 };
 
@@ -149,7 +140,4 @@ const mapStateToProps = state => ({
   alert: state.alert
 });
 
-export default connect(
-  mapStateToProps,
-  { createLead, setAlert }
-)(LeadModal);
+export default connect(mapStateToProps, { updateLead, setAlert })(withRouter(LeadUpdateModal));
